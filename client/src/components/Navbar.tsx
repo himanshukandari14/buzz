@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const Navbar = ({ account, isConnecting, connectWallet, factory }) => {
+const Navbar = ({ account, isConnecting, connectWallet }) => {
   const navigate = useNavigate();
-  const [factoryData, setFactoryData]=useState(null);
   
 
   const navigateCollection = () => {
@@ -11,19 +10,13 @@ const Navbar = ({ account, isConnecting, connectWallet, factory }) => {
     navigate("/collection");
   };
 
-  useEffect(()=>{
-    console.log(factory,"fac innav");
-    setFactoryData(factory)
-  },[factory])
-
-  console.log(factoryData,"lkshdhsa")
 
   return (
     <div className="flex justify-between items-center px-[15%] font-bold py-4 bg-black text-white">
       <div className="text-[2rem]">Buzz</div>
       <div className="flex justify-center gap-10 items-center">
         <h1>About</h1>
-        <h1 onClick={navigateCollection} factoryData={factoryData}>Collection</h1> {/* Call navigateCollection on click */}
+        <h1 onClick={navigateCollection}>Collection</h1> {/* Call navigateCollection on click */}
         <h1>FAQ</h1>
 
         {/* Wallet Button */}

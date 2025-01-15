@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true
+  },
+  "paths": {
+          "hardhat/*": ["./node_modules/hardhat/*"]
+        }
+} 

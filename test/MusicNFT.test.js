@@ -131,4 +131,83 @@ describe("MusicNFT Contract", function () {
 
     
   });
+
+
+  it("should return all music NFTs", async function () {
+    const trackName1 = "Song One";
+    const artistName1 = "Artist A";
+    const uri1 = "https://example.com/song1";
+    const price1 = ethers.parseEther("1");
+    const royaltyPercentage1 = 10;
+
+    const trackName2 = "Song Two";
+    const artistName2 = "Artist B";
+    const uri2 = "https://example.com/song2";
+    const price2 = ethers.parseEther("2");
+    const royaltyPercentage2 = 15;
+
+    // Mint two NFTs
+    await musicNFT
+      .connect(artist)
+      .mintNFT(trackName1, artistName1, uri1, price1, royaltyPercentage1);
+
+    await musicNFT
+      .connect(artist)
+      .mintNFT(trackName2, artistName2, uri2, price2, royaltyPercentage2);
+
+    // Call getAllMusicNFTs to fetch all NFTs
+    const allNFTs = await musicNFT.getAllMusicNFTs();
+
+    // Assertions
+    expect(allNFTs.length).to.equal(2);
+
+    // Validate details of the first NFT
+    expect(allNFTs[0].trackName).to.equal(trackName1);
+    expect(allNFTs[0].artistName).to.equal(artistName1);
+    expect(allNFTs[0].uri).to.equal(uri1);
+    expect(allNFTs[0].price).to.equal(price1);
+    expect(allNFTs[0].creator).to.equal(artist.address);
+    expect(allNFTs[0].royaltyPercentage).to.equal(royaltyPercentage1);
+
+    // Validate details of the second NFT
+    expect(allNFTs[1].trackName).to.equal(trackName2);
+    expect(allNFTs[1].artistName).to.equal(artistName2);
+    expect(allNFTs[1].uri).to.equal(uri2);
+    expect(allNFTs[1].price).to.equal(price2);
+    expect(allNFTs[1].creator).to.equal(artist.address);
+    expect(allNFTs[1].royaltyPercentage).to.equal(royaltyPercentage2);
+  });
+
+  it("should return the correct total supply of NFTs", async function () {
+    // Initially, the total supply should be 0
+    let totalSupply = await musicNFT.totalSupply();
+    expect(totalSupply).to.equal(0);
+
+    // Mint a new NFT
+    await musicNFT.connect(artist).mintNFT(
+      "Song One",
+      "Artist A",
+      "https://example.com/song1",
+      ethers.parseEther("1"),
+      10
+    );
+
+    // After minting one NFT, the total supply should be 1
+    totalSupply = await musicNFT.totalSupply();
+    expect(totalSupply).to.equal(1);
+
+    // Mint another NFT
+    await musicNFT.connect(artist).mintNFT(
+      "Song Two",
+      "Artist B",
+      "https://example.com/song2",
+      ethers.parseEther("2"),
+      15
+    );
+
+    // After minting another NFT, the total supply should be 2
+    totalSupply = await musicNFT.totalSupply();
+    expect(totalSupply).to.equal(2);
+  });
+
 });

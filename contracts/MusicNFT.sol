@@ -62,6 +62,23 @@ contract MusicNFT is ERC721, Ownable {
         return musicNFTS[tokenId];
     }
 
+
+// Add to MusicNFT contract
+function totalSupply() external view returns (uint256) {
+    return _tokenIdCounter;
+}
+   function getAllMusicNFTs() external view returns (Music[] memory) {
+    uint256 totalNFTs = _tokenIdCounter;
+    Music[] memory allNFTs = new Music[](totalNFTs);
+
+    for (uint256 i = 0; i < totalNFTs; i++) {
+        allNFTs[i] = musicNFTS[i];
+    }
+
+    return allNFTs;
+}
+
+
     function setPrice(uint256 tokenId, uint256 price) external payable {
         require(ownerOf(tokenId) == msg.sender, "You are not the owner");
         musicNFTS[tokenId].price = price;
